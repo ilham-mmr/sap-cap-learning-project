@@ -14,13 +14,19 @@ service LearningService {
    * Everyone with Viewer can read products.
    * Editor/Admin can change them. The backend remains the security boundary;
    * hiding an Edit button in UI5 would not be sufficient.
+   *
+   * `stockStatus` is virtual: it exists in the service metadata but is not a
+   * database column. The after-READ handler calculates it for the response.
    */
   @restrict: [
     { grant: 'READ', to: 'Viewer' },
     { grant: ['CREATE', 'UPDATE'], to: 'Editor' },
     { grant: '*', to: 'Admin' }
   ]
-  entity Products as projection on db.Products;
+  entity Products as projection on db.Products {
+    *,
+    virtual null as stockStatus : String(10)
+  };
 
   @restrict: [
     { grant: 'READ', to: 'Viewer' },
