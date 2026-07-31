@@ -1,0 +1,10 @@
+node_modules/
+gen/
+mta_archives/
+*.mtar
+db.sqlite
+coverage/
+.cdsrc-private.json
+default-env.json
+.env
+.DS_Store
