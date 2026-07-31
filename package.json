@@ -1,0 +1,61 @@
+{
+  "name": "sap-cap-learning-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Commented SAP CAP learning project covering CDS, OData V4, handlers, security, testing, and BTP deployment.",
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "test": "node --test test/*.test.js",
+    "build": "cds build --production"
+  },
+  "dependencies": {
+    "@cap-js/hana": "latest",
+    "@sap/cds": "latest",
+    "express": "latest"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "latest",
+    "@sap/cds-dk": "latest"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "[development]": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "db.sqlite"
+          }
+        },
+        "[production]": {
+          "kind": "hana"
+        }
+      },
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "viewer": {
+              "password": "viewer",
+              "roles": ["Viewer"]
+            },
+            "editor": {
+              "password": "editor",
+              "roles": ["Viewer", "Editor"]
+            },
+            "admin": {
+              "password": "admin",
+              "roles": ["Viewer", "Editor", "Admin"]
+            }
+          }
+        },
+        "[production]": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  }
+}
