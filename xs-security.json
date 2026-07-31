@@ -1,0 +1,27 @@
+{
+  "xsappname": "sap-cap-learning-project-${space}",
+  "tenant-mode": "dedicated",
+  "description": "Authorization model for the CAP learning project",
+  "scopes": [
+    { "name": "$XSAPPNAME.Viewer", "description": "Read learning data" },
+    { "name": "$XSAPPNAME.Editor", "description": "Create and update business data" },
+    { "name": "$XSAPPNAME.Admin", "description": "Full administrative access" }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "Read-only learner",
+      "scope-references": ["$XSAPPNAME.Viewer"]
+    },
+    {
+      "name": "Editor",
+      "description": "Create and change learning data",
+      "scope-references": ["$XSAPPNAME.Viewer", "$XSAPPNAME.Editor"]
+    },
+    {
+      "name": "Admin",
+      "description": "Full learning project access",
+      "scope-references": ["$XSAPPNAME.Viewer", "$XSAPPNAME.Editor", "$XSAPPNAME.Admin"]
+    }
+  ]
+}
