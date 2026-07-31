@@ -1,12 +1,13 @@
 {
   "name": "sap-cap-learning-project",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Commented SAP CAP learning project covering CDS, OData V4, handlers, security, testing, and BTP deployment.",
+  "description": "Commented SAP CAP certification learning project covering CDS, OData V4, handlers, drafts, localization, concurrency, security, testing, and BTP deployment.",
   "scripts": {
     "start": "cds-serve",
     "watch": "cds watch",
-    "test": "node --test test/*.test.js",
+    "test": "cds test",
+    "test:unit": "node --test test/order-calculator.test.js",
     "build": "cds build --production"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "express": "latest"
   },
   "devDependencies": {
+    "@cap-js/cds-test": "latest",
     "@cap-js/sqlite": "latest",
     "@sap/cds-dk": "latest"
   },
@@ -22,6 +24,9 @@
     "node": ">=20"
   },
   "cds": {
+    "i18n": {
+      "for_sqlite": ["en", "de", "id"]
+    },
     "requires": {
       "db": {
         "[development]": {
