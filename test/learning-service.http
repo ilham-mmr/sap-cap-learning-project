@@ -1,0 +1,80 @@
+@baseUrl = http://localhost:4004/odata/v4/learning
+@viewer = viewer
+@viewerPassword = viewer
+@editor = editor
+@editorPassword = editor
+@admin = admin
+@adminPassword = admin
+
+### Read metadata — the technical contract consumed by UI5/OData clients
+GET {{baseUrl}}/$metadata
+Authorization: Basic {{viewer}} {{viewerPassword}}
+
+### Read only required columns and sort on the server
+GET {{baseUrl}}/Products?$select=ID,name,price,stock&$orderby=name
+Authorization: Basic {{viewer}} {{viewerPassword}}
+
+### Filter on the server instead of downloading everything
+GET {{baseUrl}}/Products?$filter=stock lt 10
+Authorization: Basic {{viewer}} {{viewerPassword}}
+
+### Read orders together with owned items and associated customer
+GET {{baseUrl}}/Orders?$expand=items,customer
+Authorization: Basic {{viewer}} {{viewerPassword}}
+
+### Read-only function
+GET {{baseUrl}}/lowStock(threshold=10)
+Authorization: Basic {{viewer}} {{viewerPassword}}
+
+### Create a customer — requires Editor
+POST {{baseUrl}}/Customers
+Authorization: Basic {{editor}} {{editorPassword}}
+Content-Type: application/json
+
+{
+  "name": "New Learning Customer",
+  "email": "LEARNER@example.com",
+  "country": "ID"
+}
+
+### Restock action — replace PRODUCT_ID with a real UUID from Products
+POST {{baseUrl}}/restock
+Authorization: Basic {{editor}} {{editorPassword}}
+Content-Type: application/json
+
+{
+  "productID": "11111111-1111-1111-1111-111111111111",
+  "quantity": 5
+}
+
+### Deep-create an order with items — replace CUSTOMER_ID if required
+POST {{baseUrl}}/Orders
+Authorization: Basic {{editor}} {{editorPassword}}
+Content-Type: application/json
+
+{
+  "customer_ID": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "currency": "IDR",
+  "note": "Created from the learning HTTP file",
+  "items": [
+    {
+      "product_ID": "11111111-1111-1111-1111-111111111111",
+      "quantity": 2
+    },
+    {
+      "product_ID": "22222222-2222-2222-2222-222222222222",
+      "quantity": 1
+    }
+  ]
+}
+
+### Bound action — replace ORDER_ID with an order returned by the previous call
+POST {{baseUrl}}/Orders(ORDER_ID)/LearningService.submit
+Authorization: Basic {{editor}} {{editorPassword}}
+Content-Type: application/json
+
+{}
+
+### Delete is Admin-only — replace PRODUCT_ID
+DELETE {{baseUrl}}/Products(PRODUCT_ID)
+Authorization: Basic {{admin}} {{adminPassword}}
